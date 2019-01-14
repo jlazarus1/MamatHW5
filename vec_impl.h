@@ -9,6 +9,29 @@
 
 using namespace std;
 
+// Implementing the Exception classes as asked.
+
+const char* ExceptionIndexExceed::what()  const throw(){
+
+    return "index exeeds operand dimensions\n";
+
+}
+
+const char* ExceptionWrongDimensions::what() const throw(){
+
+    return "operand dimensions must agree\n";
+
+}
+
+
+const char* ExceptionEmptyOperand::what() const throw(){
+
+    return "empty operand\n";
+
+}
+
+
+//Implementing class vec methods.
 
 template <class T>
 
@@ -23,6 +46,58 @@ unsigned int Vec<T>::size() const {
 
 template <class T>
 Vec<T> Vec<T>::operator+(const Vec &rhs) const {
+    int i;
 
-    if (
+    if(this==0 || rhs==0)
+    {
+        ExceptionEmptyOperand exp;
+        throw exp;
+    }
+
+    else if (this->size()!= rhs.size())
+    {
+        ExceptionWrongDimensions exp;
+        throw  exp;
+    }
+
+    else
+        {
+        for (i = 0; i < this->size(); i++) {
+            this[i] = this[i] + rhs[i];
+        }
+    }
+    return;
 }
+
+template <class T>
+Vec<T> Vec<T>::operator*(const T &rhs) const {
+
+    int i;
+
+    if(this==0 || rhs==0)
+    {
+        ExceptionEmptyOperand exp;
+        throw exp;
+    }
+
+    else if (this->size()!= rhs.size())
+    {
+        ExceptionWrongDimensions exp;
+        throw  exp;
+    }
+
+
+    else
+    {
+        for (i = 0; i < this->size(); i++) {
+
+
+            this[i] = this[i] * rhs[i];
+
+        }
+    }
+    return;
+}
+
+
+
