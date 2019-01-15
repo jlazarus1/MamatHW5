@@ -6,34 +6,31 @@
 
 using namespace std;
 
-void test1() 
-{
-	unsigned int stage;
+void test1() {
+    unsigned int stage;
 
-	// Stage 1: vector interface
-	stage = 1;
-	cout << "Stage "<< stage << endl;
-	cout << "----------" << endl;
-	try 
-	{
-		Vec<double> v1 = (Vec<double>(3), 5, 8, Vec<double>(6), 7, 15);
-		const Vec<double> v2 = v1[Vec<unsigned int>(1), 5, 0, 2, 4, 3];
-		cout << "v1 = " << v1 << endl;
-		cout << "v2 = " << v2 << endl;
-		Vec<double> v3 = (double)2 * v2 + v1 * 3.0;
-		cout << "v3 = " << v3 << endl;
-		Vec<double> v4 = (Vec<double>(0), 0);
-		v4[0] = v1[2];
-		v4[1] = v2[5];
-		cout << "v4 = " << v4 << endl;
-		cout << endl;
-	}
-	catch (exception& e) 
-	{
-		cout << "Error in stage " << stage << ": " << e.what() << endl;
-		cout << endl;
-	}
-
+    // Stage 1: vector interface
+    stage = 1;
+    cout << "Stage " << stage << endl;
+    cout << "----------" << endl;
+    try {
+        Vec<double> v1 = (Vec<double>(3), 5, 8, Vec<double>(6), 7, 15);
+        const Vec<double> v2 = v1[Vec<unsigned int>(1), 5, 0, 2, 4, 3];
+        cout << "v1 = " << v1 << endl;
+        cout << "v2 = " << v2 << endl;
+        Vec<double> v3 = (double) 2 * v2 + v1 * 3.0;
+        cout << "v3 = " << v3 << endl;
+        Vec<double> v4 = (Vec<double>(0), 0);
+        v4[0] = v1[2];
+        v4[1] = v2[5];
+        cout << "v4 = " << v4 << endl;
+        cout << endl;
+    }
+    catch (exception &e) {
+        cout << "Error in stage " << stage << ": " << e.what() << endl;
+        cout << endl;
+    }
+}
 	/*// Stage 2: ExceptionWrongDimensions
 	stage = 2;
 	cout << "Stage "<< stage << endl;

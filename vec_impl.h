@@ -34,9 +34,24 @@ const char* ExceptionEmptyOperand::what() const throw(){
 //Implementing class vec methods.
 
 template <class T>
+Vec<T>::Vec(const T &el) {
+
+T* tmp;
+tmp= new T;
+*tmp=el;
+push_back(tmp);
+
+}
+
+
+
+
+template <class T>
 
 void Vec<T>::push_back(T el) {
 
+    vals_.push_back(el);
+    return;
 }
 
 template <class T>
@@ -98,6 +113,82 @@ Vec<T> Vec<T>::operator*(const T &rhs) const {
     }
     return;
 }
+
+
+template <class T>
+T& Vec<T>::operator[](unsigned int ind) {
+    int i;
+    typename std::list<T>::iterator tmp;    //created an iterator called tmp
+
+    if (ind>=this->size  || ind<0) {         // if the index is out of range we throw an exception.
+        ExceptionIndexExceed exp;
+        return exp;
+    }
+    else
+        tmp=begin();                //we initiate the iterator to be begin()
+        for (i=0;i<ind;i++)
+        {
+            tmp++;
+        }
+            return tmp;         //TODO: not sure this is correct. might need to return *tmp
+
+}
+
+template <class T>
+const T& Vec<T>::operator[](unsigned int ind) const {
+
+    int i;
+    typename std::list<T>::iterator const tmp;    //created an iterator called tmp
+
+    if (ind>=this->size  || ind<0) {         // if the index is out of range we throw an exception.
+        ExceptionIndexExceed exp;
+        return exp;
+    }
+    else
+        tmp=begin();                //we initiate the iterator to be begin()
+    for (i=0;i<ind;i++)
+    {
+        tmp++;
+    }
+    return tmp;
+
+}
+
+template <class T>
+Vec<T> Vec<T>::operator,(const Vec &rhs) const {
+
+    int i;
+    int length=rhs.size();
+
+    for (i=0;i<length;i++)
+    {
+        push_back(rhs[i]);
+
+    }
+
+    return this;
+
+}
+
+
+template <class T>
+Vec<T> Vec<T>::operator[](const Vec<unsigned int> &ind) const {
+
+    int i;
+
+    for (i=0;i<ind.size();i++)
+    {
+        if (ind[i]<0 || ind[i]>this->size()) {
+            ExceptionIndexExceed exp;
+            throw exp;
+        }
+    }
+
+
+
+}
+
+
 
 
 
