@@ -44,8 +44,6 @@ push_back(tmp);
 }
 
 
-
-
 template <class T>
 
 void Vec<T>::push_back(T el) {
@@ -175,6 +173,8 @@ template <class T>
 Vec<T> Vec<T>::operator[](const Vec<unsigned int> &ind) const {
 
     int i;
+    Vec<T>* tmp;
+    tmp = new Vec<T>;
 
     for (i=0;i<ind.size();i++)
     {
@@ -183,10 +183,82 @@ Vec<T> Vec<T>::operator[](const Vec<unsigned int> &ind) const {
             throw exp;
         }
     }
+            tmp->begin()=ind[0];
+        for (i=0;i<ind.size();i++)
+        {
+            tmp->push_back(*this[ind[i]]);
 
-
+        }
+        return tmp;
 
 }
+
+template<class T>
+Vec<T> operator*(const T &lhs, const Vec<T> &rhs) {
+
+    int i;
+
+    Vec<T>* tmp;
+    tmp = new Vec<T>;
+
+    if (rhs==0)     //we make sure the vector on the right is not empty if it is with throw
+    {
+        ExceptionEmptyOperand exp;
+        throw exp;
+    }
+
+    for (i=0;i<rhs.size();i++)  // here we go through all the items in the vector and multiply them with the left side.
+                                //we then push_back the new item into tmp and return it.
+    {
+        tmp->push_back(lhs*rhs[i]);
+    }
+    return tmp ;
+}
+
+template<class T>
+ostream &operator<<(ostream &ro, const Vec<T> &v) {
+    int i;
+    if (v==0)
+    {
+        ExceptionEmptyOperand exp;
+        throw exp;
+    }
+
+    ro << "(";
+
+        for (i=0;i<v.size();i++)
+        {
+            ro << v[i] << "," << "  ";
+        }
+        ro << ")" << endl;
+
+        return ro;
+}
+
+template<class T>
+Vec<T> range(T start, unsigned int size) {
+
+    Vec<T>* tmp;
+    tmp = new Vec<T>;
+    unsigned int i;
+
+    if (size==0)
+    {
+        tmp =0;
+        return tmp;
+    }
+    else
+    {
+        for(i=0;i<size;i++)
+        {
+            tmp->push_back(start+i);
+        }
+
+    }
+    return *tmp;
+}
+
+
 
 
 
