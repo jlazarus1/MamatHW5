@@ -36,10 +36,8 @@ const char* ExceptionEmptyOperand::what() const throw(){
 template <class T>
 Vec<T>::Vec(const T &el) {
 
-T* tmp;
-tmp= new T;
-*tmp=el;
-push_back(tmp);
+
+push_back(el);
 
 }
 
@@ -79,7 +77,7 @@ Vec<T> Vec<T>::operator+(const Vec &rhs) const {
             this[i] = this[i] + rhs[i];
         }
     }
-    return;
+    return *this;
 }
 
 template <class T>
@@ -109,7 +107,7 @@ Vec<T> Vec<T>::operator*(const T &rhs) const {
 
         }
     }
-    return;
+    return *this;
 }
 
 
@@ -155,27 +153,19 @@ const T& Vec<T>::operator[](unsigned int ind) const {
 template <class T>
 Vec<T> Vec<T>::operator,(const Vec &rhs) const {
 
-    int i;
-    int length=rhs.size();
-
-    for (i=0;i<length;i++)
-    {
-        push_back(rhs[i]);
-
-    }
-
-    return this;
-
+    this->end()=rhs.begin();
+    return *this;
 }
 
 
 template <class T>
 Vec<T> Vec<T>::operator[](const Vec<unsigned int> &ind) const {
-
     int i;
-    Vec<T>* tmp;
-    tmp = new Vec<T>;
-
+    Vec<T>* out;
+    out = new Vec<T>;
+    typename std::list<T>::iterator out_it = out->vals_.begin();
+    typename std::list<T>::const_iterator this_it = this->begin();
+    typename std::list<unsigned int>::const_iterator ind_it;
     for (i=0;i<ind.size();i++)
     {
         if (ind[i]<0 || ind[i]>this->size()) {
@@ -183,13 +173,15 @@ Vec<T> Vec<T>::operator[](const Vec<unsigned int> &ind) const {
             throw exp;
         }
     }
-            tmp->begin()=ind[0];
-        for (i=0;i<ind.size();i++)
+        for (ind_it=ind.begin();ind_it!=ind.end();++ind_it  )
         {
-            tmp->push_back(*this[ind[i]]);
-
+            std::advance(this_it,*ind_it);
+            *out_it=*this_it;
+            ++out_it;
+            this_it=this->begin();
         }
-        return tmp;
+
+        return *out_it;
 
 }
 
@@ -197,7 +189,7 @@ template<class T>
 Vec<T> operator*(const T &lhs, const Vec<T> &rhs) {
 
     int i;
-
+    typename std::list<T>::iterator out_it = out->vals_.begin();
     Vec<T>* tmp;
     tmp = new Vec<T>;
 
@@ -217,8 +209,9 @@ Vec<T> operator*(const T &lhs, const Vec<T> &rhs) {
 
 template<class T>
 ostream &operator<<(ostream &ro, const Vec<T> &v) {
+
     int i;
-    if (v==0)
+    if (v==(T)0)
     {
         ExceptionEmptyOperand exp;
         throw exp;

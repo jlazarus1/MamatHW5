@@ -1,8 +1,8 @@
 #include "vec.h"
-#include "mat.h"
-#include "sq_mat.h"
+//#include "mat.h"
+//#include "sq_mat.h"
 #include <iostream>
-#include "complex.h"
+//#include "complex.h"
 
 using namespace std;
 
