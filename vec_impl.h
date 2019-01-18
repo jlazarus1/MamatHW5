@@ -5,7 +5,6 @@
 #ifndef HW5_VEC_IMPL_H
 #define HW5_VEC_IMPL_H
 
-#endif //HW5_VEC_IMPL_H
 
 using namespace std;
 
@@ -34,7 +33,7 @@ const char* ExceptionEmptyOperand::what() const throw(){
 //Implementing class vec methods.
 
 template <class T>
-Vec<T>::Vec(const T &el) {
+Vec<T>::Vec(const T &el) { //TODO don't you need to initialize 'vals_'?
 
 
 push_back(el);
@@ -103,7 +102,7 @@ Vec<T> Vec<T>::operator*(const T &rhs) const {
         for (i = 0; i < this->size(); i++) {
 
 
-            this[i] = this[i] * rhs[i];
+            this[i] = this[i] * rhs[i]; //TODO i think rhs (which is T) isn't an array and so don't have index i.
 
         }
     }
@@ -118,7 +117,7 @@ T& Vec<T>::operator[](unsigned int ind) {
 
     if (ind>=this->size  || ind<0) {         // if the index is out of range we throw an exception.
         ExceptionIndexExceed exp;
-        return exp;
+        throw exp;
     }
     else
         tmp=begin();                //we initiate the iterator to be begin()
@@ -138,7 +137,7 @@ const T& Vec<T>::operator[](unsigned int ind) const {
 
     if (ind>=this->size  || ind<0) {         // if the index is out of range we throw an exception.
         ExceptionIndexExceed exp;
-        return exp;
+        throw exp;
     }
     else
         tmp=begin();                //we initiate the iterator to be begin()
@@ -252,6 +251,7 @@ Vec<T> range(T start, unsigned int size) {
 }
 
 
+#endif //HW5_VEC_IMPL_H
 
 
 

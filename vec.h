@@ -55,7 +55,7 @@ protected:
 	list<T> vals_; 
 };
 
-template <class T>
+template <class T> //TODO check if there is a need to do the same operator for the reverse order of operands
 Vec<T> operator*(const T& lhs, const Vec<T>& rhs);
 
 
