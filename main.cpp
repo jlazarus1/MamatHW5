@@ -14,6 +14,8 @@ void test1() {
     cout << "Stage " << stage << endl;
     cout << "----------" << endl;
     try {
+        Vec<double> v5 = (15);
+        cout << "v5 = " << v5 << endl;
         Vec<double> v1 = (Vec<double>(3), 5, 8, Vec<double>(6), 7, 15);
         const Vec<double> v2 = v1[Vec<unsigned int>(1), 5, 0, 2, 4, 3];
         cout << "v1 = " << v1 << endl;

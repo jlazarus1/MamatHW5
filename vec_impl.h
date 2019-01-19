@@ -48,6 +48,7 @@ void Vec<T>::push_back(T el) {
 
     vals_.push_back(el);
     return;
+
 }
 
 template <class T>
@@ -237,7 +238,7 @@ Vec<T> operator*(const T &lhs, const Vec<T> &rhs) {
 
 template<class T>
 ostream &operator<<(ostream &ro, const Vec<T> &v) {
-    typename std::list<T>::const_iterator v_it = v.begin();
+    typename std::list<T>::const_iterator v_it;
     int i;
     if (v.size()==0)
     {
@@ -247,9 +248,9 @@ ostream &operator<<(ostream &ro, const Vec<T> &v) {
 
     ro << "(";
 
-        for (i=0;i<v.size();i++)
+        for (v_it=v.begin();v_it!=v.end();v_it++)
         {
-            ro << v[i] << "," << "  ";
+            ro << *v_it << "," << "  ";
         }
         ro << ")" << endl;
 
