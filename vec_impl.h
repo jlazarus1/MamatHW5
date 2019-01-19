@@ -5,7 +5,6 @@
 #ifndef HW5_VEC_IMPL_H
 #define HW5_VEC_IMPL_H
 
-#endif //HW5_VEC_IMPL_H
 
 using namespace std;
 
@@ -278,9 +277,25 @@ Vec<T> range(T start, unsigned int size) {
     return *tmp;
 }
 
+template <class T>
+class norm_inf_comp{
+public:
+    bool operator()(Vec<T>& Ls , Vec<T>& Rh) {
+        T maxL = abs(Ls[0]);
+        for (int i=1 ; i<Ls.size() ; i++){
+            if(abs(Ls[i]) > maxL) maxL=abs(Ls[i]);
+        }
+        T maxR = abs(Rh[0]);
+        for (int i=1 ; i<Rh.size() ; i++){
+            if(abs(Rh[i]) > maxR) maxR=abs(Rh[i]);
+        }
+        return Ls<Rh;
+    }
+};
 
 
 
+#endif //HW5_VEC_IMPL_H
 
 
 

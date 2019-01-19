@@ -9,36 +9,6 @@
 #include "mat.h"
 #include "vec.h"
 
-template <class T>
-T rec_det(SqMat<T> m){
-    if ( m.width()==1) return m[0][0];
-    if ( m.width()==2){
-        T det = (m[0][0]*m[1][1])+(m[1][0]*m[0][1]);
-        return det;
-    }
-    T det = rec_det(create_small_mat(m,0));
-    for( int i=1 ; i<m.height() ; i++){
-        det = det + rec_det(create_small_mat(m,i));
-    }
-}
-
-
-template <class T>
-SqMat create_small_mat(SqMat<T> m, int i){
-    Vec() det_rowV;
-    Vec() det_colV;
-    if(i!=0){
-        det_rowV.push_back(0);
-    }
-    for (int k=1 ; k<m.size() ; k++){
-        det_colV.push_back(k);
-        if (k==i) continue;
-        det_rowV.push_back(k);
-    }
-    Mat(m.get_cols(det_colV)) Mtmp;
-    SqMat(Mtmp.get_rows(det_rowV)) Msml;
-    return Msml;
-}
 
 
 template <class T>
@@ -59,7 +29,24 @@ unsigned int SqMat::size() const{
 
 template <class T>
 T SqMat::determinant() const{
-    T det = rec_det(*this);
+    if ( size()==0) {
+        ExceptionEmptyOperand exp;
+        throw exp;
+    }
+    if ( size()==1) return m[0][0];
+    if ( size()==2){
+        return (m[0][0]*m[1][1])-(m[1][0]*m[0][1]);
+    }
+    T det(0)
+    T sign(-1);
+    for( unsigned int i=0 ; i<size() ; i++){
+        sign = sign*(-1);
+        T base = this[0][i]*sign; // current element for minor calculate
+        Vec <unsigned int> minorV = (range(0,i),range(i+1,size()-i-1)); // create vector for excluding the right column
+        Mat <T> tmpM = this->get_cols(minorV);
+        SqMat<T> minorM = tmpM.get_rows(range(1,tmpM.height())); // creating small matrix for the next minor
+        det = det + base*minorM.determinant(); // recursive calculate
+    }
 }
 
 #endif //MAMATHW5_SQ_MAT_IMPL_H
