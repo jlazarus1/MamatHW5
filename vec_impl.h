@@ -67,10 +67,8 @@ Vec<T> Vec<T>::operator+(const Vec &rhs) const {
 
     Vec<T>* tmp;
     tmp = new Vec<T>;
-    typename std::list<T>::iterator tmp_it = tmp->vals_.begin();
     typename std::list<T>::const_iterator rhs_it = rhs.begin();
     typename std::list<T>::const_iterator this_it = this->begin();
-    int i;
 
     if(*this_it==0 || *rhs_it==0)
     {
@@ -87,11 +85,11 @@ Vec<T> Vec<T>::operator+(const Vec &rhs) const {
     else
         {
         for (this_it=this->begin(); this_it!=this->end(); this_it++) {
-            *tmp_it=*this_it+*rhs_it;
+            tmp->push_back(*this_it+*rhs_it);
             rhs_it++;
         }
     }
-    return *this;
+    return *tmp;
 }
 
 template <class T>
@@ -100,8 +98,6 @@ Vec<T> Vec<T>::operator*(const T &rhs) const {
     Vec<T>* tmp;
     tmp = new Vec<T>;
     typename std::list<T>::const_iterator this_it = this->begin();
-    typename std::list<T>::iterator tmp_it = tmp->vals_.begin();
-    int i;
 
     if(*this_it==0)
     {
@@ -114,7 +110,7 @@ Vec<T> Vec<T>::operator*(const T &rhs) const {
         for (this_it=this->begin(); this_it!=this->end(); this_it++) {
 
 
-            *tmp_it=*this_it*rhs;
+            tmp->push_back(rhs*(*this_it));
 
         }
     }
@@ -125,17 +121,17 @@ Vec<T> Vec<T>::operator*(const T &rhs) const {
 template <class T>
 T& Vec<T>::operator[](unsigned int ind) {
 
-    typename std::list<T>::iterator this_it;
-    typename std::list<T>::iterator tmp;    //created an iterator called tmp
-
+    typename std::list<T>::iterator this_it=this->vals_.begin();
+    int i;
     if (ind>=this->size()  || ind<0) {         // if the index is out of range we throw an exception.
         ExceptionIndexExceed exp ;
         throw exp;
     }
     else
 
-        for (this_it=this->vals_.begin();this_it!=this->vals_.end();this_it++)
+        for (i=0;i<ind;i++)
         {
+            this_it++;
         }
             return *this_it;
 
@@ -144,9 +140,9 @@ T& Vec<T>::operator[](unsigned int ind) {
 template <class T>
 const T& Vec<T>::operator[](unsigned int ind) const {
 
+    int i;
+    typename std::list<T>::const_iterator this_it=this->begin();
 
-    typename std::list<T>::const_iterator this_it;
-    typename std::list<T>::iterator const tmp;    //created an iterator called tmp
 
     if (ind>=this->size()  || ind<0) {         // if the index is out of range we throw an exception.
         ExceptionIndexExceed exp;
@@ -154,8 +150,9 @@ const T& Vec<T>::operator[](unsigned int ind) const {
     }
     else
 
-    for (this_it=this->begin();this_it!=this->end();this_it++)
+    for (i=0;i<ind;i++)
     {
+        this_it++;
     }
     return *this_it;
 
@@ -166,17 +163,14 @@ Vec<T> Vec<T>::operator,(const Vec &rhs) const {
     Vec<T>* tmp;
     tmp = new Vec<T>;
     typename std::list<T>::const_iterator this_it;
-    typename std::list<T>::iterator tmp_it=tmp->vals_.begin();
     typename std::list<T>::const_iterator rhs_it;
         for (this_it=this->begin();this_it!=this->end();this_it++)
     {
-            *tmp_it=*this_it;
-            tmp_it++;
+            tmp->push_back(*this_it);
     }
         for (rhs_it=rhs.begin();rhs_it!=rhs.end();rhs_it++)
         {
-            *tmp_it=*rhs_it;
-            tmp_it++;
+            tmp->push_back(*rhs_it);
 
         }
 
@@ -190,7 +184,6 @@ Vec<T> Vec<T>::operator[](const Vec<unsigned int> &ind) const {
     int i;
     Vec<T>* out;
     out = new Vec<T>;
-    typename std::list<T>::iterator out_it = out->vals_.begin();
     typename std::list<T>::const_iterator this_it = this->begin();
     typename std::list<unsigned int>::const_iterator ind_it;
     for (i=0;i<ind.size();i++)
@@ -203,22 +196,18 @@ Vec<T> Vec<T>::operator[](const Vec<unsigned int> &ind) const {
         for (ind_it=ind.begin();ind_it!=ind.end();++ind_it  )
         {
             std::advance(this_it,*ind_it);
-            *out_it=*this_it;
-            ++out_it;
+            out->push_back(*this_it);
             this_it=this->begin();
         }
 
-        return *out_it;
+        return *out;
 
 }
 
 template<class T>
-Vec<T> operator*(const T &lhs, const Vec<T> &rhs) {
+Vec<T> operator*(const T &lhs, const Vec<T>& rhs) {
 
-    int i;
-    Vec<T> * out;
-    out = new Vec<T>;
-    typename std::list<T>::const_iterator rhs_it = rhs.begin();
+    typename std::list<T>::const_iterator rhs_it=rhs.begin();
     Vec<T>* tmp;
     tmp = new Vec<T>;
 
@@ -228,10 +217,10 @@ Vec<T> operator*(const T &lhs, const Vec<T> &rhs) {
         throw exp;
     }
 
-    for (i=0;i<rhs.size();i++)  // here we go through all the items in the vector and multiply them with the left side.
+    for (rhs_it=rhs.begin();rhs_it!=rhs.end();rhs_it++)  // here we go through all the items in the vector and multiply them with the left side.
                                 //we then push_back the new item into tmp and return it.
     {
-        tmp->push_back(lhs*rhs[i]);
+        tmp->push_back(lhs*(*rhs_it));
     }
     return *tmp ;
 }
@@ -239,7 +228,7 @@ Vec<T> operator*(const T &lhs, const Vec<T> &rhs) {
 template<class T>
 ostream &operator<<(ostream &ro, const Vec<T> &v) {
     typename std::list<T>::const_iterator v_it;
-    int i;
+    int count=0;
     if (v.size()==0)
     {
         ExceptionEmptyOperand exp;
@@ -250,7 +239,12 @@ ostream &operator<<(ostream &ro, const Vec<T> &v) {
 
         for (v_it=v.begin();v_it!=v.end();v_it++)
         {
-            ro << *v_it << "," << "  ";
+            if (count==v.size()-1)
+                ro << *v_it;
+            else {
+                ro << *v_it << "," << "  ";
+                count++;
+            }
         }
         ro << ")" << endl;
 
