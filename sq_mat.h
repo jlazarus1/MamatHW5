@@ -14,5 +14,4 @@ public:
 
 #include "sq_mat_impl.h"
 
-
-#endif  //_SQ_MAT_H_
+#endif // _SQ_MAT_H_

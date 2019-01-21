@@ -180,8 +180,7 @@ Mat<T> Mat<T>::get_rows(const Vec<unsigned int>& ind) const{
         ExceptionWrongDimensions exp;
         throw exp;
     }
-    Mat newM;
-    newM = new Mat;
+    Mat<T> newM();
 
     for (auto p:ind)
     {

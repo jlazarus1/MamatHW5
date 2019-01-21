@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include "complex.h"
-//#include "sq_mat.h"
+#include "sq_mat.h"
 
 using namespace std;
 
@@ -95,8 +95,6 @@ void test1() {
         cout << endl;
     }
 
-}
-/*
 
 
 	// Stage 6: square matrix interface
@@ -121,8 +119,8 @@ void test1() {
 		cout << "Error in stage " << stage << ": " << e.what() << endl;
 		cout << endl;
 	}
-
-	// Stage 7: sorting
+    }
+	/*/ Stage 7: sorting
 	stage = 7;
 	cout << "Stage "<< stage << endl;
 	cout << "----------" << endl;
