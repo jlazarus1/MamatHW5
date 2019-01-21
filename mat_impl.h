@@ -30,7 +30,7 @@ T VecMul (Vec<T> vec1 , Vec<T> vec2){
 
 template <class T>
 // create empty matrix
-Mat::Mat(unsigned int w) : w_(w), Vec() {
+Mat<T>::Mat(unsigned int w) : w_(w), Vec<T>() {
     if (w_<1){
         ExceptionEmptyOperand exp;
         throw exp;
@@ -39,7 +39,7 @@ Mat::Mat(unsigned int w) : w_(w), Vec() {
 
 template <class T>
 // create matrix with only one row
-Mat::Mat(Vec<T> vec_1d)
+Mat<T>::Mat(Vec<T> vec_1d)
 : w_(vec_1d.size()) , Vec<Vec<T>>(vec_1d){
     if (w_<1){
         ExceptionEmptyOperand exp;
@@ -49,13 +49,12 @@ Mat::Mat(Vec<T> vec_1d)
 
 template <class T>
 // create new matrix from a matrix
-Mat::Mat(Vec<Vec<T>> vec_2d)
-: w_(vec_2d[0].size()) , {
+Mat<T>::Mat(Vec<Vec<T>> vec_2d)
+: w_(vec_2d[0].size())  {
     if (w_<1){
         ExceptionEmptyOperand exp;
         throw exp;
     }
-    Vec<Vec<T>>(vec_2d[0]);
     for (int i=1 ; i<vec_2d.size() ; i++){
         if (w_ != vec_2d[i]){
             ExceptionWrongDimensions exp;
@@ -65,37 +64,39 @@ Mat::Mat(Vec<Vec<T>> vec_2d)
     }
 }
 
+template <class T>
 // returns the matrix width
-unsigned int Mat::width() const {
+unsigned int Mat<T>::width() const {
     return w_;
 }
 
+template <class T>
 // returns the matrix height
-unsigned int Mat::height() const {
-    return(this->size();
+unsigned int Mat<T>::height() const {
+    return(this->size());
 }
 
 
 template <class T>
 // sum two matrices
-Mat Mat::operator+(const Mat& rhs) const {
+Mat<T> Mat<T>::operator+(const Mat<T>& rhs) const {
     if(w_ != rhs.width() || this->height() != rhs.height()) { //checking the matrixes dimensions fits
         ExceptionWrongDimensions exp;
         throw exp;
     }
 
-    Mat(w_) newMat;
+    Mat<T> newMat (w_);
     for( int i = 0 ; i < w_ ; i++){
         newMat[i].pushback(this[i]+rhs[i]);
     }
-    return *this
+    return *this;
 }
 
 
 template <class T>
 // multiple every element in the matrix
-Mat Mat::operator*(const T& rhs) const{
-    Mat(w_) newMat;
+Mat<T> Mat<T>::operator*(const T& rhs) const{
+    Mat newMat (w_);
     for (int i=0 ; i<w_ ; i++){
         newMat[i].pushback(this[i]*rhs);
     }
@@ -105,16 +106,16 @@ Mat Mat::operator*(const T& rhs) const{
 
 template <class T>
 // doing algebraic matrix multiplication
-Mat Mat::operator*(const Mat<T> &rhs) const {
+Mat<T> Mat<T>::operator*(const Mat<T> &rhs) const {
     if (w_ != rhs.height()){
         ExceptionWrongDimensions exp;
         throw exp;
     }
 
-    Mat(w_) newMat;
-    Mat(rhs.transpose()) mul_Mat;
+    Mat<T> newMat (w_);
+    Mat<T> mul_Mat(rhs.transpose());
     for(int i=0 ; i<this->height() ; i++){
-        Vec() Vtmp;
+        Vec<T> Vtmp ();
         for (int j=0 ; j<mul_Mat.height() ; j++){
             Vtmp.push_back(VecMul(this[i],mul_Mat[j]));
         }
@@ -127,13 +128,13 @@ Mat Mat::operator*(const Mat<T> &rhs) const {
 
 template <class T>
 // connect two matrices into one
-Mat Mat::operator,(const Mat<T> &rhs) const {
+Mat<T> Mat<T>::operator,(const Mat<T> &rhs) const {
     if (w_ != rhs.width()){
         ExceptionWrongDimensions exp;
         throw exp;
     }
 
-    Mat(this) newM;
+    Mat<T> newM(*this);
     for (int i=0 ; i<rhs.width() ; i++){
         newM.push_back(rhs[i]);
     }
@@ -142,13 +143,13 @@ Mat Mat::operator,(const Mat<T> &rhs) const {
 
 template <class T>
 // create new matrix only from the specific rows from the inserted vector
-Mat Mat::get_rows(const Vec<unsigned int>& ind) const{
+Mat<T> Mat<T>::get_rows(const Vec<unsigned int>& ind) const{
     int h = ind.size();
     if (h < 1){
         ExceptionWrongDimensions exp;
         throw exp;
     }
-    Mat(h) newM;
+    Mat<T> newM(h);
     for (int i=0 ; i<h ; i++){
         if (ind[i] < 0 || ind[i] > this->height()){
             ExceptionWrongDimensions exp;
@@ -161,13 +162,13 @@ Mat Mat::get_rows(const Vec<unsigned int>& ind) const{
 
 template <class T>
 // transpose the matrix and do the same as 'get_rows'
-Mat Mat::get_cols(const Vec<unsigned int>& ind) const{
+Mat<T> Mat<T>::get_cols(const Vec<unsigned int>& ind) const{
     int h = ind.size();
     if (h < 1){
         ExceptionWrongDimensions exp;
         throw exp;
     }
-    Mat(h) newM;
+    Mat<T> newM(h);
     for (int i=0 ; i<h ; i++){
         if (ind[i] < 0 || ind[i] > this->height()){
             ExceptionWrongDimensions exp;
@@ -179,14 +180,14 @@ Mat Mat::get_cols(const Vec<unsigned int>& ind) const{
 
 template <class T>
 // the function creates vector from each coloumn and insert the vector as a row to new matrix
-Mat Mat::transpose() const{
+Mat<T> Mat<T>::transpose() const{
     int w_new = this->height();
-    Mat(w_new) Mnew;
+    Mat<T> Mnew(w_new);
 
     for (int i=0 ; i<w_ ; i++){
-        Vec() Vtmp;
+        Vec<T> Vtmp();
         for (int j=0 ; j<this->height() ; j++){
-            Vtmp.push_back((this[j])[i])
+            Vtmp.push_back((this[j])[i]);
         }
         Mnew.push_back(Vtmp);
         delete[] Vtmp;

@@ -13,12 +13,12 @@
 
 
 template <class T>
-SqMat::SqMat(Mat<T> m){
+SqMat::SqMat(Mat<T> m) {}{
     if(m.height() != m.width()){
         ExceptionWrongDimensions exp;
         throw exp;
     }
-    Mat(m);
+    Mat<T>(Vec< Vec<T> > m);
 }
 
 
