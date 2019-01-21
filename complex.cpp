@@ -35,6 +35,13 @@ Complex& Complex::operator*(Complex &c) {
 }
 
 
+Complex& Complex::operator-(Complex &c) {
+    double r(re_ - c.get_r());
+    double i(im_ - c.get_i());
+    Complex sol (r,i);
+    return sol;
+}
+
 Complex& Complex::operator=(Complex &c) {
     re_ = c.get_r();
     im_ = c.get_i();
