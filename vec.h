@@ -52,12 +52,11 @@ public:
 	}
 
 protected:
-	list<T> vals_; 
+	list<T> vals_;
 };
 
 template <class T>
 Vec<T> operator*(const T& lhs, const Vec<T>& rhs);
-
 
 template <class T>
 ostream& operator<<(ostream& ro, const Vec<T>& v);

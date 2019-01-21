@@ -5,7 +5,6 @@
 #ifndef MAMATHW5_SQ_MAT_IMPL_H
 #define MAMATHW5_SQ_MAT_IMPL_H
 
-#include "sq_mat.h"
 #include <cmath>
 
 
@@ -45,7 +44,8 @@ T SqMat<T>::determinant() const{
         Vec <unsigned int> minorV = (range(0,i),range(i+1,size-i-1)); // create vector for excluding the right column
         Vec <unsigned int> decreas_row = range(sec_row,this->size()-1);
         Mat <T> tmpM = this->get_rows(decreas_row); // creating small matrix for the next minor
-        SqMat<T> minorM (tmpM.get_cols(minorV));
+        Mat<T> t (tmpM.get_cols(minorV));
+        SqMat<T> minorM(t);
         det = det + base*minorM.determinant(); // recursive calculate
     }
 }

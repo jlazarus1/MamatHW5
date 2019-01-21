@@ -123,29 +123,17 @@ Mat<T> Mat<T>::operator*(const Mat<T> &rhs) const {
         ExceptionWrongDimensions exp;
         throw exp;
     }
-    Mat<T>* newMat;
-    newMat = new Mat<T>(w_);
-    newMat->w_=this->w_;
-    *newMat=rhs.transpose();
-    Vec<T>* Vtmp;
+    Mat<T> newMat(rhs.transpose());
 
-    Mat* outMat;
-    outMat = new Mat<T>(w_);
+    Mat<T> outMat(rhs.width());
     for(this_it=this->begin() ; this_it!=this->end() ; this_it++){
-        Vtmp = new Vec<T>;
-        for (newMat_it=newMat->begin();newMat_it!=newMat->end();newMat_it++){
-         Vtmp->push_back(VecMul(*this_it,*newMat_it));
+        Vec<T> Vtmp;
+        for (newMat_it=newMat.begin();newMat_it!=newMat.end();newMat_it++){
+            Vtmp.push_back(VecMul(*this_it,*newMat_it));
         }
-        outMat->push_back(*Vtmp);
-        delete Vtmp;
-
-
-
-
+        outMat.push_back(Vtmp);
     }
-    delete newMat;
-
-    return *outMat;
+    return outMat;
 }
 
 
@@ -199,12 +187,13 @@ Mat<T> Mat<T>::get_cols(const Vec<unsigned int>& ind) const{
         throw exp;
     }
     Mat<T> newM(h);
+    Mat<T> trns_M(this->transpose());
     for (int i=0 ; i<h ; i++){
-        if (ind[i] < 0 || ind[i] > this->height()){
+        if (ind[i] < 0 || ind[i] > h){
             ExceptionWrongDimensions exp;
             throw exp;
         }
-        newM.push_back(this->transpose()[ind[i]]);
+        newM.push_back(trns_M[ind[i]]);
     }
 }
 
@@ -212,26 +201,20 @@ template <class T>
 // the function creates vector from each coloumn and insert the vector as a row to new matrix
 Mat<T> Mat<T>::transpose() const{
     typename std::list<Vec<T>>::const_iterator this_it;
-    typename std::list<T>::const_iterator vec_it;
-    Mat<T>* Mnew;
-    Mnew = new Mat<T>(this->height());
-    Vec<T>* tmp_vec;
+    unsigned int new_w = this->height();
+    Mat<T> Mnew(new_w);
 
-
-    for (int i=0;i<width();i++)
+    for (unsigned int i=0 ; i<this->width() ; i++)
     {
-        tmp_vec = new Vec<T>;
-        for (this_it=this->begin();this_it!=this->end();this_it++)
+        Vec<T> tmpV ;
+        for (this_it = this->begin() ; this_it!=this->end() ; this_it++)
         {
-            vec_it=(*this_it).begin();
-            std::advance(vec_it,i);
-            tmp_vec->push_back(*vec_it);
+            tmpV.push_back((*this_it)[i]);
         }
-        Mnew->push_back(*tmp_vec);
-        delete tmp_vec;
+        Mnew.push_back(tmpV);
     }
 
-    return *Mnew;
+    return Mnew;
 
 }
 
