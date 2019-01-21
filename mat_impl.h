@@ -49,18 +49,20 @@ Mat<T>::Mat(Vec<T> vec_1d)
 
 template <class T>
 // create new matrix from a matrix
-Mat<T>::Mat(Vec<Vec<T>> vec_2d)
-: w_(vec_2d[0].size())  {
+Mat<T>::Mat(Vec<Vec<T>> vec_2d) {
+    typename std::list<T>::const_iterator i = vec_2d.begin();
+    w_(i->size());
     if (w_<1){
         ExceptionEmptyOperand exp;
         throw exp;
     }
-    for (int i=1 ; i<vec_2d.size() ; i++){
+    while (i != vec_2d.end()) {
         if (w_ != vec_2d[i]){
             ExceptionWrongDimensions exp;
             throw exp;
         }
-        this[i].push_back(vec_2d[i]);
+        this[i].push_back(*i);
+        i++;
     }
 }
 

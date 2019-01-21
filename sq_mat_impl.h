@@ -13,32 +13,33 @@
 
 
 template <class T>
-SqMat::SqMat(Mat<T> m) {}{
+SqMat<T>::SqMat(Mat<T> m) {
     if(m.height() != m.width()){
         ExceptionWrongDimensions exp;
         throw exp;
     }
-    Mat<T>(Vec< Vec<T> > m);
+    Mat<T> newM(m);
 }
 
 
 template <class T>
-unsigned int SqMat::size() const{
+unsigned int SqMat<T>::size() const{
     return this->width();
 }
 
 
 template <class T>
-T SqMat::determinant() const{
+T SqMat<T>::determinant() const{
     if ( size()==0) {
         ExceptionEmptyOperand exp;
         throw exp;
     }
+    typename std::list<T>::const_iterator m = this->begin();
     if ( size()==1) return m[0][0];
     if ( size()==2){
         return (m[0][0]*m[1][1])-(m[1][0]*m[0][1]);
     }
-    T det(0)
+    T det(0);
     T sign;
     for( unsigned int i=0 ; i<size() ; i++){
         sign = pow((-1),(i%2));
