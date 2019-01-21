@@ -63,6 +63,12 @@ unsigned int Vec<T>::size() const {
 template <class T>
 Vec<T> Vec<T>::operator+(const Vec &rhs) const {
 
+    if (this->size()!= rhs.size())
+    {
+        ExceptionWrongDimensions exp;
+        throw  exp;
+    }
+
     Vec<T>* tmp;
     tmp = new Vec<T>;
     typename std::list<T>::const_iterator rhs_it = rhs.begin();
@@ -87,6 +93,7 @@ Vec<T> Vec<T>::operator+(const Vec &rhs) const {
             rhs_it++;
         }
     }
+
     return *tmp;
 }
 
@@ -251,13 +258,14 @@ ostream &operator<<(ostream &ro, const Vec<T> &v) {
 
 template<class T>
 Vec<T> range(T start, unsigned int size) {
+
     Vec<T>* tmp;
     tmp = new Vec<T>;
     unsigned int i;
 
     if (size==0)
     {
-        tmp =0;
+        *tmp =0;
         return *tmp;
     }
     else
