@@ -18,10 +18,12 @@ double Complex::get_r() const {
 }
 
 Complex& Complex::operator+(Complex &c) {
+
     double r(re_ + c.get_r());
     double i(im_ + c.get_i());
-    Complex sol (r,i);
-    return sol;
+    Complex* sol;
+    sol =new Complex(r,i);
+    return *sol;
 }
 
 

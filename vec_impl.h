@@ -68,7 +68,7 @@ Vec<T> Vec<T>::operator+(const Vec &rhs) const {
     typename std::list<T>::const_iterator rhs_it = rhs.begin();
     typename std::list<T>::const_iterator this_it = this->begin();
 
-    if(*this_it==0 || *rhs_it==0)
+    if(this->size()==0 || rhs.size()==0)
     {
         ExceptionEmptyOperand exp;
         throw exp;
@@ -251,7 +251,6 @@ ostream &operator<<(ostream &ro, const Vec<T> &v) {
 
 template<class T>
 Vec<T> range(T start, unsigned int size) {
-
     Vec<T>* tmp;
     tmp = new Vec<T>;
     unsigned int i;
@@ -259,7 +258,7 @@ Vec<T> range(T start, unsigned int size) {
     if (size==0)
     {
         tmp =0;
-        return tmp;
+        return *tmp;
     }
     else
     {

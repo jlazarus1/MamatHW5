@@ -5,7 +5,7 @@
 #ifndef MAT_IMPL_H
 #define MAT_IMPL_H
 
-#include "mat.h"
+
 
 
 // Side functions
@@ -14,14 +14,20 @@
 template <class T>
 // calculate vector's multiple
 T VecMul (Vec<T> vec1 , Vec<T> vec2){
+    typename std::list<T>::const_iterator vec1_it=vec1.begin();
+    typename std::list<T>::const_iterator vec2_it=vec2.begin();
     if (vec1.size() != vec2.size()){
         ExceptionWrongDimensions exp;
         throw exp;
     }
 
-    T elem = vec1[0]*vec2[0];
-    for( int i=1 ; i<vec1.size() ; i++){
-        elem = elem+(vec1[i]*vec2[i]);
+    T elem = (*vec1_it)*(*vec2_it);
+    vec2_it++;
+    vec1_it++;
+    while(vec1_it!=vec1.end() ){
+        elem = elem+(*vec1_it*(*vec2_it));
+        vec2_it++;
+        vec1_it++;
     }
     return elem;
 }
@@ -30,8 +36,8 @@ T VecMul (Vec<T> vec1 , Vec<T> vec2){
 
 template <class T>
 // create empty matrix
-Mat::Mat(unsigned int w) : w_(w), Vec() {
-    if (w_<1){
+Mat<T>::Mat(unsigned int w) : w_(w) {
+    if(w_<1){
         ExceptionEmptyOperand exp;
         throw exp;
     }
@@ -39,23 +45,24 @@ Mat::Mat(unsigned int w) : w_(w), Vec() {
 
 template <class T>
 // create matrix with only one row
-Mat::Mat(Vec<T> vec_1d)
+Mat<T>::Mat(Vec<T> vec_1d)
 : w_(vec_1d.size()) , Vec<Vec<T>>(vec_1d){
     if (w_<1){
         ExceptionEmptyOperand exp;
         throw exp;
     }
+
 }
 
 template <class T>
 // create new matrix from a matrix
-Mat::Mat(Vec<Vec<T>> vec_2d)
-: w_(vec_2d[0].size()) , {
+Mat<T>::Mat(Vec<Vec<T>> vec_2d)
+: w_(vec_2d[0].size()) {
     if (w_<1){
         ExceptionEmptyOperand exp;
         throw exp;
     }
-    Vec<Vec<T>>(vec_2d[0]);
+   // Vec<Vec<T>>(vec_2d[0]);
     for (int i=1 ; i<vec_2d.size() ; i++){
         if (w_ != vec_2d[i]){
             ExceptionWrongDimensions exp;
@@ -64,134 +71,208 @@ Mat::Mat(Vec<Vec<T>> vec_2d)
         this[i].push_back(vec_2d[i]);
     }
 }
-
+template<class T>
 // returns the matrix width
-unsigned int Mat::width() const {
+unsigned int Mat<T>::width() const {
     return w_;
 }
-
+template<class T>
 // returns the matrix height
-unsigned int Mat::height() const {
-    return(this->size();
+unsigned int Mat<T>::height() const {
+    return(this->size());
 }
 
 
 template <class T>
 // sum two matrices
-Mat Mat::operator+(const Mat& rhs) const {
+Mat<T> Mat<T>::operator+(const Mat& rhs) const {
     if(w_ != rhs.width() || this->height() != rhs.height()) { //checking the matrixes dimensions fits
         ExceptionWrongDimensions exp;
         throw exp;
     }
-
-    Mat(w_) newMat;
+    Mat* newMat;
+    newMat = new Mat;
+    newMat->w_=this->w_;
     for( int i = 0 ; i < w_ ; i++){
         newMat[i].pushback(this[i]+rhs[i]);
     }
-    return *this
+    return *newMat;
 }
 
 
 template <class T>
 // multiple every element in the matrix
-Mat Mat::operator*(const T& rhs) const{
-    Mat(w_) newMat;
-    for (int i=0 ; i<w_ ; i++){
-        newMat[i].pushback(this[i]*rhs);
+Mat<T> Mat<T>::operator*(const T& rhs) const{
+    typename std::list<Vec<T>>::const_iterator this_it;
+    Mat* newMat;
+    newMat = new Mat<T>(w_);
+    for (this_it=this->begin();this_it!=this->end();this_it++){
+        newMat->push_back(rhs*(*this_it));
     }
-    return newMat;
+    return *newMat;
 }
 
 
 template <class T>
 // doing algebraic matrix multiplication
-Mat Mat::operator*(const Mat<T> &rhs) const {
+Mat<T> Mat<T>::operator*(const Mat<T> &rhs) const {
+    typename std::list<Vec<T>>::const_iterator this_it;
+    typename std::list<Vec<T>>::const_iterator newMat_it;
     if (w_ != rhs.height()){
         ExceptionWrongDimensions exp;
         throw exp;
     }
+    Mat<T>* newMat;
+    newMat = new Mat<T>(w_);
+    newMat->w_=this->w_;
+    *newMat=rhs.transpose();
+    Vec<T>* Vtmp;
+    Vtmp = new Vec<T>;
+    Mat* outMat;
+    outMat = new Mat<T>(w_);
+    for(this_it=this->begin() ; this_it!=this->end() ; this_it++){
 
-    Mat(w_) newMat;
-    Mat(rhs.transpose()) mul_Mat;
-    for(int i=0 ; i<this->height() ; i++){
-        Vec() Vtmp;
-        for (int j=0 ; j<mul_Mat.height() ; j++){
-            Vtmp.push_back(VecMul(this[i],mul_Mat[j]));
+        for (newMat_it=newMat->begin();newMat_it!=newMat->end();newMat_it++){
+         Vtmp->push_back(VecMul(*this_it,*newMat_it));
         }
-        newMat.push_back(Vtmp);
-        delete[] Vtmp;
+        outMat->push_back(*Vtmp);
+        delete Vtmp;
+
+
+
+
     }
-    return newMat;
+    delete[] newMat;
+
+    return *outMat;
 }
 
 
 template <class T>
 // connect two matrices into one
-Mat Mat::operator,(const Mat<T> &rhs) const {
+Mat<T> Mat<T>::operator,(const Mat<T> &rhs) const {
+    typename std::list<Vec<T>>::const_iterator this_it;
+    typename std::list<Vec<T>>::const_iterator rhs_it;
     if (w_ != rhs.width()){
         ExceptionWrongDimensions exp;
         throw exp;
     }
 
-    Mat(this) newM;
-    for (int i=0 ; i<rhs.width() ; i++){
-        newM.push_back(rhs[i]);
+    Mat<T>* newM;
+    newM = new Mat<T>(w_);
+    for (this_it=this->begin();this_it!=this->end();this_it++)
+    {
+        newM->push_back(*this_it);
     }
-    return newM;
+    for (rhs_it=rhs.begin();rhs_it!=rhs.end();rhs_it++){
+        newM->push_back(*rhs_it);
+    }
+    return *newM;
 }
 
 template <class T>
 // create new matrix only from the specific rows from the inserted vector
-Mat Mat::get_rows(const Vec<unsigned int>& ind) const{
+Mat<T> Mat<T>::get_rows(const Vec<unsigned int>& ind) const{
+    typename std::list<Vec<T>>::const_iterator this_it;
     int h = ind.size();
     if (h < 1){
         ExceptionWrongDimensions exp;
         throw exp;
     }
-    Mat(h) newM;
-    for (int i=0 ; i<h ; i++){
-        if (ind[i] < 0 || ind[i] > this->height()){
-            ExceptionWrongDimensions exp;
-            throw exp;
+    Mat newM;
+    newM = new Mat;
+
+    for (auto p:ind)
+    {
+        for (this_it=this->begin();this_it!=this->end();this_it++)
+        {
+
+            newM.push_back(*this_it[p]);
+
         }
-        newM.push_back(this[ind[i]]);
+
     }
+
+    return *newM;
+
 }
 
 
 template <class T>
 // transpose the matrix and do the same as 'get_rows'
-Mat Mat::get_cols(const Vec<unsigned int>& ind) const{
+Mat<T> Mat<T>::get_cols(const Vec<unsigned int>& ind) const{
+    typename std::list<Vec<T>>::const_iterator this_it;
+    typename std::list<Vec<T>>::const_iterator ind_it;
     int h = ind.size();
     if (h < 1){
         ExceptionWrongDimensions exp;
         throw exp;
     }
-    Mat(h) newM;
-    for (int i=0 ; i<h ; i++){
-        if (ind[i] < 0 || ind[i] > this->height()){
+    Mat<T>* newM;
+    newM = new Mat<T>;
+    for(ind_it=ind.begin();ind_it!=ind.end();ind_it++)
+    {
+        if (*ind_it < 0 || *ind_it > this->height()) {
             ExceptionWrongDimensions exp;
             throw exp;
         }
-        newM.push_back(this->transpose()[ind[i]]);
+
+        for(this_it=this->begin();this_it!=*ind_it;this_it++){}
+
+        newM->push_back(*this_it);
+
     }
+
+    newM=newM->transpose();
+
+
+
+    return *newM;
 }
 
 template <class T>
 // the function creates vector from each coloumn and insert the vector as a row to new matrix
-Mat Mat::transpose() const{
-    int w_new = this->height();
-    Mat(w_new) Mnew;
-
-    for (int i=0 ; i<w_ ; i++){
-        Vec() Vtmp;
-        for (int j=0 ; j<this->height() ; j++){
-            Vtmp.push_back((this[j])[i])
-        }
-        Mnew.push_back(Vtmp);
-        delete[] Vtmp;
+Mat<T> Mat<T>::transpose() const{
+    typename std::list<Vec<T>>::const_iterator this_it;
+    Mat<T>* Mnew;
+    Mnew = new Mat<T>(w_);
+    for (this_it=this->begin();this_it!=this->end();this_it++){
+        Mnew->push_back(*this_it);
     }
+    return *Mnew;
 
 }
+
+template <class T>
+Mat<T> operator*(const T& lhs, const Mat<T>& rhs){
+    typename std::list<Vec<T>>::const_iterator rhs_it;
+
+    Mat<T>* tmp;
+    tmp = new Mat<T>(rhs.width());
+    for (rhs_it=rhs.begin();rhs_it!=rhs.end();rhs_it++)
+    {
+        tmp->push_back(lhs*(*rhs_it));
+
+    }
+
+    return *tmp;
+
+
+}
+
+
+
+template <class T>
+ostream& operator<<(ostream& ro, const Mat<T>& m){
+    typename std::list<Vec<T>>::const_iterator this_it;
+
+    for (this_it=m.begin();this_it!=m.end();this_it++)
+    {
+        ro << *this_it;
+    }
+    return ro;
+
+}
+
 
 #endif //MAT_IMPL_H
