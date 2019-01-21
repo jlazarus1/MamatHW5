@@ -174,60 +174,38 @@ Mat<T> Mat<T>::operator,(const Mat<T> &rhs) const {
 template <class T>
 // create new matrix only from the specific rows from the inserted vector
 Mat<T> Mat<T>::get_rows(const Vec<unsigned int>& ind) const{
-    typename std::list<Vec<T>>::const_iterator this_it;
-    int h = ind.size();
+    unsigned int h = ind.size();
     if (h < 1){
         ExceptionWrongDimensions exp;
         throw exp;
     }
-    Mat<T> newM();
-
-    for (auto p:ind)
-    {
-        for (this_it=this->begin();this_it!=this->end();this_it++)
-        {
-
-            newM.push_back(*this_it[p]);
-
+    Mat<T> newM(h);
+    for (int i=0 ; i<h ; i++){
+        if (ind[i] < 0 || ind[i] > this->height()){
+            ExceptionWrongDimensions exp;
+            throw exp;
         }
-
+        newM.push_back((*this)[ind[i]]);
     }
-
-    return *newM;
-
 }
 
 
 template <class T>
 // transpose the matrix and do the same as 'get_rows'
 Mat<T> Mat<T>::get_cols(const Vec<unsigned int>& ind) const{
-    typename std::list<Vec<T>>::const_iterator this_it;
-    typename std::list<Vec<T>>::const_iterator ind_it;
-    int h = ind.size();
+    unsigned int h = ind.size();
     if (h < 1){
         ExceptionWrongDimensions exp;
         throw exp;
     }
-    Mat<T>* newM;
-    newM = new Mat<T>;
-    for(ind_it=ind.begin();ind_it!=ind.end();ind_it++)
-    {
-        if (*ind_it < 0 || *ind_it > this->height()) {
+    Mat<T> newM(h);
+    for (int i=0 ; i<h ; i++){
+        if (ind[i] < 0 || ind[i] > this->height()){
             ExceptionWrongDimensions exp;
             throw exp;
         }
-
-        for(this_it=this->begin();this_it!=*ind_it;this_it++){}
-
-        newM->push_back(*this_it);
-
+        newM.push_back(this->transpose()[ind[i]]);
     }
-
-    newM=newM->transpose();
-
-
-
-    return *newM;
 }
 
 template <class T>
