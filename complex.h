@@ -20,6 +20,7 @@ public:
     double get_i() const;
     Complex& operator+(Complex& c);
     Complex& operator*(Complex& c);
+    Complex& operator-(Complex& c);
     Complex& operator=(Complex& c);
     friend ostream& operator<<(ostream& ro , const Complex& c);
     friend double abs(const Complex& c);
