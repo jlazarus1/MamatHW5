@@ -175,6 +175,7 @@ Mat<T> Mat<T>::get_rows(const Vec<unsigned int>& ind) const{
         }
         newM.push_back((*this)[ind[i]]);
     }
+    return newM;
 }
 
 
@@ -195,6 +196,7 @@ Mat<T> Mat<T>::get_cols(const Vec<unsigned int>& ind) const{
         }
         newM.push_back(trns_M[ind[i]]);
     }
+    return newM;
 }
 
 template <class T>
