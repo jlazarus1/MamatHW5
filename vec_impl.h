@@ -263,7 +263,7 @@ Vec<T> range(T start, unsigned int size) {
 
     if (size==0)
     {
-        return NULL;
+        return *tmp;
     }
     else
     {
