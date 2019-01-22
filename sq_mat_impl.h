@@ -41,13 +41,14 @@ T SqMat<T>::determinant() const{
     for( unsigned int i=0 ; i<size ; i++){
         sign = pow((-1),(i%2));
         T base = (*this)[0][i] * sign; // current element for minor calculate
-        Vec <unsigned int> minorV = (range(0,i),range(i+1,size-i-1)); // create vector for excluding the right column
+        Vec <unsigned int> minorV = i==0 ? ((range(i+1,size-i-1))) : (range((unsigned  int)0,i),(range(i+1,size-i-1))); // create vector for excluding the right column
         Vec <unsigned int> decreas_row = range(sec_row,this->size()-1);
-        Mat <T> tmpM = this->get_rows(decreas_row); // creating small matrix for the next minor
+        Mat <T> tmpM (this->get_rows(decreas_row)); // creating small matrix for the next minor
         Mat<T> t (tmpM.get_cols(minorV));
         SqMat<T> minorM(t);
         det = det + base*minorM.determinant(); // recursive calculate
     }
+    return det;
 }
 
 #endif //MAMATHW5_SQ_MAT_IMPL_H

@@ -167,7 +167,7 @@ Mat<T> Mat<T>::get_rows(const Vec<unsigned int>& ind) const{
         ExceptionWrongDimensions exp;
         throw exp;
     }
-    Mat<T> newM(h);
+    Mat<T> newM(this->width());
     for (int i=0 ; i<h ; i++){
         if (ind[i] < 0 || ind[i] > this->height()){
             ExceptionWrongDimensions exp;
@@ -175,6 +175,7 @@ Mat<T> Mat<T>::get_rows(const Vec<unsigned int>& ind) const{
         }
         newM.push_back((*this)[ind[i]]);
     }
+    return newM;
 }
 
 
@@ -195,6 +196,7 @@ Mat<T> Mat<T>::get_cols(const Vec<unsigned int>& ind) const{
         }
         newM.push_back(trns_M[ind[i]]);
     }
+    return newM;
 }
 
 template <class T>

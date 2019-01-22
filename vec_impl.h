@@ -53,11 +53,9 @@ template <class T>
 unsigned int Vec<T>::size() const {
     typename std::list<T>::const_iterator this_it;
     int i=0;
+    if (this== nullptr) return 0;
     for (this_it=this->begin();this_it!=this->end();this_it++){i++;}
     return i;
-
-
-
 }
 
 template <class T>
@@ -265,8 +263,7 @@ Vec<T> range(T start, unsigned int size) {
 
     if (size==0)
     {
-        *tmp =0;
-        return *tmp;
+        return NULL;
     }
     else
     {
