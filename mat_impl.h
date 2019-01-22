@@ -21,7 +21,7 @@ T VecMul (Vec<T> vec1 , Vec<T> vec2){
         throw exp;
     }
 
-    T elem = (*vec1_it)*(*vec2_it);
+    T elem(-5);
     vec2_it++;
     vec1_it++;
     while(vec1_it!=vec1.end() ){

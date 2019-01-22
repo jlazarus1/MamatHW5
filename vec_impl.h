@@ -269,7 +269,8 @@ Vec<T> range(T start, unsigned int size) {
     {
         for(int i=0;i<size;i++)
         {
-            tmp->push_back(start+x);
+            tmp->push_back(start);
+            start = start+x;
         }
 
     }
@@ -280,11 +281,11 @@ template <class T>
 class norm_inf_comp {
 public:
     bool operator()(Vec<T> Ls, Vec<T> Rh) const {
-        T maxL = abs(Ls[0]);
+        double maxL (abs(Ls[0]));
         for (int i = 1; i < Ls.size(); i++) {
             if (abs(Ls[i]) > maxL) maxL = abs(Ls[i]);
         }
-        T maxR = abs(Rh[0]);
+        double maxR (abs(Rh[0]));
         for (int i = 1; i < Rh.size(); i++) {
             if (abs(Rh[i]) > maxR) maxR = abs(Rh[i]);
         }

@@ -19,7 +19,7 @@ public:
     double get_r() const;
     double get_i() const;
     Complex& operator+(Complex& c);
-    Complex& operator*(Complex& c);
+    Complex& operator*(const Complex &c) const;
     Complex& operator-(Complex& c);
     Complex& operator=(Complex& c);
     friend ostream& operator<<(ostream& ro , const Complex& c);

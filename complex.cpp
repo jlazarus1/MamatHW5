@@ -27,7 +27,7 @@ Complex& Complex::operator+(Complex &c) {
 }
 
 
-Complex& Complex::operator*(Complex &c) {
+Complex& Complex::operator*(const Complex &c) const {
     double r = re_*c.get_r() - im_*c.get_i();
     double i = re_*c.get_i() + im_*c.get_r();
     Complex sol (r,i);

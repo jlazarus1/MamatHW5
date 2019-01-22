@@ -36,10 +36,9 @@ T SqMat<T>::determinant() const{
         return ((*this)[0][0] * (*this)[1][1])-((*this)[1][0] * (*this)[0][1]);
     }
     T det(0);
-    T sign;
     unsigned int sec_row=1;
     for( unsigned int i=0 ; i<size ; i++){
-        sign = pow((-1),(i%2));
+        T sign (pow((-1),(i%2)));
         T base = (*this)[0][i] * sign; // current element for minor calculate
         Vec <unsigned int> minorV = ((range<unsigned int>(0,i)) , (range<unsigned int>(i+1,size-i-1))); // create vector for excluding the right column
         Vec <unsigned int> decreas_row = range<unsigned int>(sec_row,this->size()-1);
