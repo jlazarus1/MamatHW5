@@ -142,8 +142,8 @@ void test1() {
 		cout << endl;
 		cout << "Error in stage " << stage << ": " << e.what() << endl;
 	}
-}
-	/*/ Stage 8: complex numbers
+
+	// Stage 8: complex numbers
 	stage = 8;
 	cout << "Stage "<< stage << endl;
 	cout << "----------" << endl;
@@ -172,7 +172,7 @@ void test1() {
 		cout << "Error in stage " << stage << ": " << e.what() << endl;
 		cout << endl;
 	}
-}*/
+}
 
 int main()
 {

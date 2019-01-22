@@ -259,17 +259,17 @@ Vec<T> range(T start, unsigned int size) {
 
     Vec<T>* tmp;
     tmp = new Vec<T>;
-    unsigned int i;
+    T x(1);
 
     if (size==0)
     {
-        return NULL;
+        return *tmp;
     }
     else
     {
-        for(i=0;i<size;i++)
+        for(int i=0;i<size;i++)
         {
-            tmp->push_back(start+i);
+            tmp->push_back(start+x);
         }
 
     }
