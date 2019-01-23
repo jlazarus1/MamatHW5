@@ -16,20 +16,21 @@ template <class T>
 T VecMul (Vec<T> vec1 , Vec<T> vec2){
     typename std::list<T>::const_iterator vec1_it=vec1.begin();
     typename std::list<T>::const_iterator vec2_it=vec2.begin();
-    if (vec1.size() != vec2.size()){
+    if (vec1.size() != vec2.size()) {
         ExceptionWrongDimensions exp;
         throw exp;
     }
+    T *elem;
 
-    T elem(-5);
+    elem = new T((*vec1_it)*(*vec2_it));
     vec2_it++;
     vec1_it++;
     while(vec1_it!=vec1.end() ){
-        elem = elem+(*vec1_it*(*vec2_it));
+        *elem = *elem+(*vec1_it*(*vec2_it));
         vec2_it++;
         vec1_it++;
     }
-    return elem;
+    return *elem;
 }
 
 // Implementation for class Mat
@@ -80,6 +81,7 @@ unsigned int Mat<T>::width() const {
 template<class T>
 // returns the matrix height
 unsigned int Mat<T>::height() const {
+    if (w_==0) return 0;
     return(this->size());
 }
 

@@ -17,6 +17,12 @@ double Complex::get_r() const {
     return re_;
 }
 
+Complex::Complex(const Complex& rhs) {
+
+    im_= rhs.get_i();
+    re_ = rhs.get_r();
+}
+
 Complex& Complex::operator+(Complex &c) {
 
     double r(re_ + c.get_r());
@@ -30,16 +36,19 @@ Complex& Complex::operator+(Complex &c) {
 Complex& Complex::operator*(const Complex &c) const {
     double r = re_*c.get_r() - im_*c.get_i();
     double i = re_*c.get_i() + im_*c.get_r();
-    Complex sol (r,i);
-    return sol;
+    Complex* sol;
+    sol = new Complex(r,i);
+
+    return *sol;
 }
 
 
 Complex& Complex::operator-(Complex &c) {
     double r(re_ - c.get_r());
     double i(im_ - c.get_i());
-    Complex sol (r,i);
-    return sol;
+    Complex* sol;
+    sol =new  Complex(r,i);
+    return *sol;
 }
 
 Complex& Complex::operator=(Complex &c) {

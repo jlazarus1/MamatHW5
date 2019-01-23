@@ -16,6 +16,7 @@ private:
 
 public:
     Complex(double r=0, double i=0);
+    Complex(const Complex& rhs);
     double get_r() const;
     double get_i() const;
     Complex& operator+(Complex& c);
