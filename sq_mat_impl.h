@@ -9,6 +9,7 @@
 
 
 
+
 template <class T>
 SqMat<T>::SqMat(Mat<T> m) : Mat<T>(m){
     if(m.height() != m.width()){
@@ -33,7 +34,7 @@ T SqMat<T>::determinant() const{
     }
     if ( size==1) return (*this)[0][0];
     if ( size==2){
-        return (((*this)[0][0] * (*this)[1][1])-((*this)[1][0] * (*this)[0][1]));
+        return (((*this)[0][0] * (*this)[1][1]))-((*this)[1][0] * (*this)[0][1]);
     }
     T det(0);
     unsigned int sec_row=1;

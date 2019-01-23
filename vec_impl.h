@@ -5,27 +5,28 @@
 #ifndef HW5_VEC_IMPL_H
 #define HW5_VEC_IMPL_H
 
+#include <cmath>
+#include "complex.h"
 
-using namespace std;
 
 // Implementing the Exception classes as asked.
 
 const char* ExceptionIndexExceed::what()  const throw(){
 
-    return "index exeeds operand dimensions\n";
+    return "index exeeds operand dimensions";
 
 }
 
 const char* ExceptionWrongDimensions::what() const throw(){
 
-    return "operand dimensions must agree\n";
+    return "operand dimensions must agree";
 
 }
 
 
 const char* ExceptionEmptyOperand::what() const throw(){
 
-    return "empty operand\n";
+    return "empty operand";
 
 }
 
@@ -53,7 +54,6 @@ template <class T>
 unsigned int Vec<T>::size() const {
     typename std::list<T>::const_iterator this_it;
     int i=0;
-    if (this== nullptr) return 0;
     for (this_it=this->begin();this_it!=this->end();this_it++){i++;}
     return i;
 }
@@ -124,7 +124,7 @@ template <class T>
 T& Vec<T>::operator[](unsigned int ind) {
 
     typename std::list<T>::iterator this_it=this->vals_.begin();
-    int i;
+    unsigned int i;
     if (ind>=this->size()  || ind<0) {         // if the index is out of range we throw an exception.
         ExceptionIndexExceed exp ;
         throw exp;
@@ -142,7 +142,7 @@ T& Vec<T>::operator[](unsigned int ind) {
 template <class T>
 const T& Vec<T>::operator[](unsigned int ind) const {
 
-    int i;
+    unsigned int i;
     typename std::list<T>::const_iterator this_it=this->begin();
 
 
@@ -183,7 +183,7 @@ Vec<T> Vec<T>::operator,(const Vec &rhs) const {
 
 template <class T>
 Vec<T> Vec<T>::operator[](const Vec<unsigned int> &ind) const {
-    int i;
+    unsigned int i;
     Vec<T> out;
     typename std::list<T>::const_iterator this_it = this->begin();
     typename std::list<unsigned int>::const_iterator ind_it;
@@ -228,7 +228,7 @@ Vec<T> operator*(const T &lhs, const Vec<T>& rhs) {
 template<class T>
 ostream &operator<<(ostream &ro, const Vec<T> &v) {
     typename std::list<T>::const_iterator v_it;
-    int count=0;
+    unsigned int count=0;
     if (v.size()==0)
     {
         ExceptionEmptyOperand exp;
@@ -242,11 +242,11 @@ ostream &operator<<(ostream &ro, const Vec<T> &v) {
             if (count==v.size()-1)
                 ro << *v_it;
             else {
-                ro << *v_it << "," << "  ";
+                ro << *v_it << "," << "\t";
                 count++;
             }
         }
-        ro << ")" << endl;
+        ro << ")";
 
         return ro;
 }
@@ -263,7 +263,7 @@ Vec<T> range(T start, unsigned int size) {
     }
     else
     {
-        for(int i=0;i<size;i++)
+        for(unsigned int i=0;i<size;i++)
         {
             tmp.push_back(start);
             start = start+x;
@@ -278,11 +278,11 @@ class norm_inf_comp {
 public:
     bool operator()(Vec<T> Ls, Vec<T> Rh) const {
         double maxL (abs(Ls[0]));
-        for (int i = 1; i < Ls.size(); i++) {
+        for (unsigned int i = 1; i < Ls.size(); i++) {
             if (abs(Ls[i]) > maxL) maxL = abs(Ls[i]);
         }
         double maxR (abs(Rh[0]));
-        for (int i = 1; i < Rh.size(); i++) {
+        for (unsigned int i = 1; i < Rh.size(); i++) {
             if (abs(Rh[i]) > maxR) maxR = abs(Rh[i]);
         }
         return maxL < maxR;

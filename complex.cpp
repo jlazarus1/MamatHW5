@@ -6,7 +6,7 @@
 #include <cmath>
 
 
-Complex::Complex(double r, double i) : re_(r) , im_(i){}
+Complex::Complex(double r, double i) :im_(i),re_(r) {}
 
 double Complex::get_i() const {
     return im_;
@@ -23,46 +23,37 @@ Complex::Complex(const Complex& rhs) {
     re_ = rhs.get_r();
 }
 
-Complex& Complex::operator+(Complex &c) {
+Complex Complex::operator+(const Complex &c) const {
 
     double r(re_ + c.get_r());
     double i(im_ + c.get_i());
-    Complex* sol;
-    sol =new Complex(r,i);
-    return *sol;
+    Complex sol(r,i);
+    return sol;
 }
 
 
-Complex& Complex::operator*(const Complex &c) const {
+Complex Complex::operator*(const Complex &c) const {
     double r = re_*c.get_r() - im_*c.get_i();
     double i = re_*c.get_i() + im_*c.get_r();
-    Complex* sol;
-    sol = new Complex(r,i);
 
-    return *sol;
+    Complex sol(r,i);
+
+    return sol;
 }
 
 
-Complex& Complex::operator-(Complex &c) {
+Complex Complex::operator-(const Complex &c) const {
     double r(re_ - c.get_r());
     double i(im_ - c.get_i());
-    Complex* sol;
-    sol =new  Complex(r,i);
-    return *sol;
+    Complex sol(r,i);
+    return sol;
 }
 
-Complex& Complex::operator=(Complex &c) {
-    re_ = c.get_r();
-    im_ = c.get_i();
-    return *this;
-}
-
-
-double abs(const Complex& c) {
-    double r = c.get_r();
-    double i = c.get_i();
-    return sqrt(r*r + i*i);
-}
+    double abs(const Complex &c) {
+        double r = c.get_r();
+        double i = c.get_i();
+        return sqrt(r * r + i * i);
+    }
 
 
 ostream& operator<<(ostream& ro , const Complex& c) {

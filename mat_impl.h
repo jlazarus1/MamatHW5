@@ -47,7 +47,7 @@ Mat<T>::Mat(unsigned int w) : w_(w) {
 template <class T>
 // create matrix with only one row
 Mat<T>::Mat(Vec<T> vec_1d)
-: w_(vec_1d.size()) , Vec<Vec<T>>(vec_1d){
+:  Vec<Vec<T>>(vec_1d),w_(vec_1d.size()) {
     if (w_<1){
         ExceptionEmptyOperand exp;
         throw exp;
@@ -168,7 +168,7 @@ Mat<T> Mat<T>::get_rows(const Vec<unsigned int>& ind) const{
         throw exp;
     }
     Mat<T> newM(this->width());
-    for (int i=0 ; i<h ; i++){
+    for (unsigned int i=0 ; i<h ; i++){
         if (ind[i] < 0 || ind[i] > this->height()){
             ExceptionWrongDimensions exp;
             throw exp;
@@ -189,7 +189,7 @@ Mat<T> Mat<T>::get_cols(const Vec<unsigned int>& ind) const{
     }
     Mat<T> newM(h);
     Mat<T> trns_M(this->transpose());
-    for (int i=0 ; i<h ; i++){
+    for (unsigned int i=0 ; i<h ; i++){
         if (ind[i] < 0 || ind[i] > h){
             ExceptionWrongDimensions exp;
             throw exp;
@@ -242,11 +242,18 @@ Mat<T> operator*(const T& lhs, const Mat<T>& rhs){
 template <class T>
 ostream& operator<<(ostream& ro, const Mat<T>& m){
     typename std::list<Vec<T>>::const_iterator this_it;
-
+    ro << "(" <<endl;
+    unsigned int i=0;
     for (this_it=m.begin();this_it!=m.end();this_it++)
     {
         ro << *this_it;
+        if (i<(m.height()-1)) {
+            ro << ",";
+        }
+        ro<<endl;
+        i++;
     }
+    ro<< ")";
     return ro;
 
 }
