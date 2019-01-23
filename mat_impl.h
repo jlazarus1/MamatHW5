@@ -20,17 +20,17 @@ T VecMul (Vec<T> vec1 , Vec<T> vec2){
         ExceptionWrongDimensions exp;
         throw exp;
     }
-    T *elem;
 
-    elem = new T((*vec1_it)*(*vec2_it));
+
+    T elem((*vec1_it)*(*vec2_it));
     vec2_it++;
     vec1_it++;
     while(vec1_it!=vec1.end() ){
-        *elem = *elem+(*vec1_it*(*vec2_it));
+        elem = elem+(*vec1_it*(*vec2_it));
         vec2_it++;
         vec1_it++;
     }
-    return *elem;
+    return elem;
 }
 
 // Implementation for class Mat
@@ -107,12 +107,11 @@ template <class T>
 // multiple every element in the matrix
 Mat<T> Mat<T>::operator*(const T& rhs) const{
     typename std::list<Vec<T>>::const_iterator this_it;
-    Mat* newMat;
-    newMat = new Mat<T>(w_);
+    Mat<T> newMat(w_);
     for (this_it=this->begin();this_it!=this->end();this_it++){
-        newMat->push_back(rhs*(*this_it));
+        newMat.push_back(rhs*(*this_it));
     }
-    return *newMat;
+    return newMat;
 }
 
 
@@ -149,16 +148,15 @@ Mat<T> Mat<T>::operator,(const Mat<T> &rhs) const {
         throw exp;
     }
 
-    Mat<T>* newM;
-    newM = new Mat<T>(w_);
+    Mat<T> newM(w_);
     for (this_it=this->begin();this_it!=this->end();this_it++)
     {
-        newM->push_back(*this_it);
+        newM.push_back(*this_it);
     }
     for (rhs_it=rhs.begin();rhs_it!=rhs.end();rhs_it++){
-        newM->push_back(*rhs_it);
+        newM.push_back(*rhs_it);
     }
-    return *newM;
+    return newM;
 }
 
 template <class T>
@@ -226,15 +224,15 @@ template <class T>
 Mat<T> operator*(const T& lhs, const Mat<T>& rhs){
     typename std::list<Vec<T>>::const_iterator rhs_it;
 
-    Mat<T>* tmp;
-    tmp = new Mat<T>(rhs.width());
+
+    Mat<T> tmp(rhs.width());
     for (rhs_it=rhs.begin();rhs_it!=rhs.end();rhs_it++)
     {
-        tmp->push_back(lhs*(*rhs_it));
+        tmp.push_back(lhs*(*rhs_it));
 
     }
 
-    return *tmp;
+    return tmp;
 
 
 }
