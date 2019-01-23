@@ -69,7 +69,7 @@ Vec<T> Vec<T>::operator+(const Vec &rhs) const {
 
     Vec<T> tmp;
     typename std::list<T>::const_iterator rhs_it = rhs.begin();
-    typename std::list<T>::const_iterator this_it = this->begin();
+    typename std::list<T>::const_iterator this_it;
 
     if(this->size()==0 || rhs.size()==0)
     {
@@ -99,9 +99,9 @@ Vec<T> Vec<T>::operator*(const T &rhs) const {
 
     Vec<T> tmp;
 
-    typename std::list<T>::const_iterator this_it = this->begin();
+    typename std::list<T>::const_iterator this_it;
 
-    if(*this_it==0)
+    if(this->size()==0)
     {
         ExceptionEmptyOperand exp;
         throw exp;
@@ -208,10 +208,10 @@ Vec<T> Vec<T>::operator[](const Vec<unsigned int> &ind) const {
 template<class T>
 Vec<T> operator*(const T &lhs, const Vec<T>& rhs) {
 
-    typename std::list<T>::const_iterator rhs_it=rhs.begin();
+    typename std::list<T>::const_iterator rhs_it;
     Vec<T> tmp;
 
-    if (*rhs_it==0)     //we make sure the vector on the right is not empty if it is with throw
+    if (rhs.size()==0)     //we make sure the vector on the right is not empty if it is with throw
     {
         ExceptionEmptyOperand exp;
         throw exp;
