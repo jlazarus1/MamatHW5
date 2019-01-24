@@ -8,7 +8,7 @@
 #include <cmath>
 
 
-
+//constructor of the sqmat.
 
 template <class T>
 SqMat<T>::SqMat(Mat<T> m) : Mat<T>(m){
@@ -17,14 +17,16 @@ SqMat<T>::SqMat(Mat<T> m) : Mat<T>(m){
         throw exp;
     }
 }
-
-
+//Function name:size().
+//returns size of sqmat.
 template <class T>
 unsigned int SqMat<T>::size() const{
     return this->width();
 }
 
 
+//Function name: determinant. 
+//returns the determinant of the matrix by using recusive calculations. 
 template <class T>
 T SqMat<T>::determinant() const{
     unsigned int size = this->size();

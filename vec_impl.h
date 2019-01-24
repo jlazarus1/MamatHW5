@@ -33,6 +33,7 @@ const char* ExceptionEmptyOperand::what() const throw(){
 
 //Implementing class vec methods.
 
+//implementing constructor.
 template <class T>
 Vec<T>::Vec(const T &el) {
 
@@ -41,6 +42,7 @@ push_back(el);
 
 }
 
+//implementing push_back
 
 template <class T>
 void Vec<T>::push_back(T el) {
@@ -50,6 +52,8 @@ void Vec<T>::push_back(T el) {
 
 }
 
+
+//function name: size() - returns size of vector.
 template <class T>
 unsigned int Vec<T>::size() const {
     typename std::list<T>::const_iterator this_it;
@@ -58,6 +62,8 @@ unsigned int Vec<T>::size() const {
     return i;
 }
 
+
+//operator +
 template <class T>
 Vec<T> Vec<T>::operator+(const Vec &rhs) const {
 
@@ -94,6 +100,8 @@ Vec<T> Vec<T>::operator+(const Vec &rhs) const {
     return tmp;
 }
 
+
+//Operator *
 template <class T>
 Vec<T> Vec<T>::operator*(const T &rhs) const {
 
@@ -120,6 +128,7 @@ Vec<T> Vec<T>::operator*(const T &rhs) const {
 }
 
 
+//Operator [] - recieves an index and returns the value by reference.
 template <class T>
 T& Vec<T>::operator[](unsigned int ind) {
 
@@ -139,6 +148,8 @@ T& Vec<T>::operator[](unsigned int ind) {
 
 }
 
+
+//Operator [] - same as above just for const T
 template <class T>
 const T& Vec<T>::operator[](unsigned int ind) const {
 
@@ -160,6 +171,8 @@ const T& Vec<T>::operator[](unsigned int ind) const {
 
 }
 
+
+//Operator ,
 template <class T>
 Vec<T> Vec<T>::operator,(const Vec &rhs) const {
     Vec<T> tmp;
@@ -181,6 +194,8 @@ Vec<T> Vec<T>::operator,(const Vec &rhs) const {
 }
 
 
+
+//Operator[] - for recieveing a vector of indeces
 template <class T>
 Vec<T> Vec<T>::operator[](const Vec<unsigned int> &ind) const {
     unsigned int i;
@@ -205,6 +220,8 @@ Vec<T> Vec<T>::operator[](const Vec<unsigned int> &ind) const {
 
 }
 
+
+//Operator* - multiplying T and a vector. 
 template<class T>
 Vec<T> operator*(const T &lhs, const Vec<T>& rhs) {
 
@@ -225,6 +242,8 @@ Vec<T> operator*(const T &lhs, const Vec<T>& rhs) {
     return tmp ;
 }
 
+
+//ostream - printing a vector. 
 template<class T>
 ostream &operator<<(ostream &ro, const Vec<T> &v) {
     typename std::list<T>::const_iterator v_it;
@@ -251,6 +270,8 @@ ostream &operator<<(ostream &ro, const Vec<T> &v) {
         return ro;
 }
 
+
+//Function - range. returns a vector of size and first value start.
 template<class T>
 Vec<T> range(T start, unsigned int size) {
 
@@ -273,6 +294,8 @@ Vec<T> range(T start, unsigned int size) {
     return tmp;
 }
 
+
+//class norm_inf_comp: class that returns the norm inf comp of a vector. 
 template <class T>
 class norm_inf_comp {
 public:

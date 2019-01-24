@@ -1,101 +1,107 @@
 #include "vec.h"
 #include "mat.h"
-
+#include "sq_mat.h"
 #include <iostream>
 #include "complex.h"
-#include "sq_mat.h"
 
 using namespace std;
 
-void test1() {
-    unsigned int stage;
+void test1() 
+{
+	unsigned int stage;
 
-    // Stage 1: vector interface
-    stage = 1;
-    cout << "Stage " << stage << endl;
-    cout << "----------" << endl;
-    try {
-        Vec<double> v1 = (Vec<double>(3), 5, 8, Vec<double>(6), 7, 15);
-        const Vec<double> v2 = v1[Vec<unsigned int>(1), 5, 0, 2, 4, 3];
-        cout << "v1 = " << v1 << endl;
-        cout << "v2 = " << v2 << endl;
-        Vec<double> v3 = (double) 2 * v2 + v1 * 3.0;
-        cout << "v3 = " << v3 << endl;
-        Vec<double> v4 = (Vec<double>(0), 0);
-        v4[0] = v1[2];
-        v4[1] = v2[5];
-        cout << "v4 = " << v4 << endl;
-        cout << endl;
-    }
-    catch (exception &e) {
-        cout << "Error in stage " << stage << ": " << e.what() << endl;
-        cout << endl;
-    }
+	// Stage 1: vector interface
+	stage = 1;
+	cout << "Stage "<< stage << endl;
+	cout << "----------" << endl;
+	try 
+	{
+		Vec<double> v1 = (Vec<double>(3), 5, 8, Vec<double>(6), 7, 15);
+		const Vec<double> v2 = v1[Vec<unsigned int>(1), 5, 0, 2, 4, 3];
+		cout << "v1 = " << v1 << endl;
+		cout << "v2 = " << v2 << endl;
+		Vec<double> v3 = (double)2 * v2 + v1 * 3.0;
+		cout << "v3 = " << v3 << endl;
+		Vec<double> v4 = (Vec<double>(0), 0);
+		v4[0] = v1[2];
+		v4[1] = v2[5];
+		cout << "v4 = " << v4 << endl;
+		cout << endl;
+	}
+	catch (exception& e) 
+	{
+		cout << "Error in stage " << stage << ": " << e.what() << endl;
+		cout << endl;
+	}
 
-    // Stage 2: ExceptionWrongDimensions
-    stage = 2;
-    cout << "Stage " << stage << endl;
-    cout << "----------" << endl;
-    try {
-        Vec<unsigned int> v1 = range((unsigned int) 0, 5) + Vec<unsigned int>(3);
-        cout << "v1 = " << v1 << endl;
-        cout << endl;
-    }
-    catch (exception &e) {
-        cout << "Error in stage " << stage << ": " << e.what() << endl;
-        cout << endl;
-    }
+	// Stage 2: ExceptionWrongDimensions
+	stage = 2;
+	cout << "Stage "<< stage << endl;
+	cout << "----------" << endl;
+	try 
+	{
+		Vec<unsigned int> v1 = range((unsigned int)0, 5) + Vec<unsigned int>(3);
+		cout << "v1 = " << v1 << endl;
+		cout << endl;
+	}
+	catch (exception& e) 
+	{
+		cout << "Error in stage " << stage << ": " << e.what() << endl;
+		cout << endl;
+	}
 
-    // Stage 3: ExceptionEmptyOperand
-    stage = 3;
-    cout << "Stage " << stage << endl;
-    cout << "----------" << endl;
-    try {
-        Vec<unsigned int> v;
-        cout << v << endl;
-        cout << endl;
-    }
-    catch (exception &e) {
-        cout << "Error in stage " << stage << ": " << e.what() << endl;
-        cout << endl;
-    }
+	// Stage 3: ExceptionEmptyOperand 
+	stage = 3;
+	cout << "Stage "<< stage << endl;
+	cout << "----------" << endl;
+	try
+	{
+		Vec<unsigned int> v;
+		cout << v << endl;
+		cout << endl;
+	}
+	catch (exception& e) 
+	{
+		cout << "Error in stage " << stage << ": " << e.what() << endl;
+		cout << endl;
+	}
 
-    // Stage 4: ExceptionIndexExceed
-    stage = 4;
-    cout << "Stage " << stage << endl;
-    cout << "----------" << endl;
-    try {
-        Vec<double> v1 = range(5.1, 8);
-        cout << "v1 = " << v1 << endl;
-        cout << "v1[15] = " << v1[15] << endl;
-        cout << endl;
-    }
-    catch (exception &e) {
-        cout << "Error in stage " << stage << ": " << e.what() << endl;
-        cout << endl;
-    }
+	// Stage 4: ExceptionIndexExceed  
+	stage = 4;
+	cout << "Stage "<< stage << endl;
+	cout << "----------" << endl;
+	try 
+	{
+		Vec<double> v1 = range(5.1, 8);
+		cout << "v1 = " << v1 << endl;
+		cout << "v1[15] = " << v1[15] << endl;
+		cout << endl;
+	}
+	catch (exception& e) 
+	{
+		cout << "Error in stage " << stage << ": " << e.what() << endl;
+		cout << endl;
+	}
 
-
-
-    // Stage 5: matrix interface
-    stage = 5;
-    cout << "Stage " << stage << endl;
-    cout << "----------" << endl;
-    try {
-        Mat<double> m1 = (Mat<double>(range(1.0, 5)), range(-3.0, 5), range(7.0, 5));
-        cout << "m1 = " << endl << m1 << endl;
-        cout << "m1 * transpose(m1) = " << endl << m1 * m1.transpose() << endl;
-        Mat<double> m2 = (Mat<double>((Vec<double>(3), 7, 5)), range((double) 1, 3));
-        cout << "m2 = " << endl << m2 << endl;
-        cout << "3 * m2 * (0.5) = " << endl << 3.0 * m2 * (0.5) << endl;
-        cout << endl;
-    }
-    catch (exception &e) {
-        cout << "Error in stage " << stage << ": " << e.what() << endl;
-        cout << endl;
-    }
-
-
+	// Stage 5: matrix interface
+	stage = 5;
+	cout << "Stage "<< stage << endl;
+	cout << "----------" << endl;
+	try 
+	{
+		Mat<double> m1 = ( Mat<double>( range(1.0, 5) ), range(-3.0, 5), range(7.0, 5) );
+		cout << "m1 = " << endl << m1 << endl;
+		cout << "m1 * transpose(m1) = " << endl << m1 * m1.transpose() << endl;
+		Mat<double> m2 = ( Mat<double>( (Vec<double>(3), 7, 5) ), range((double)1, 3) );
+		cout << "m2 = " << endl << m2 << endl;
+		cout << "3 * m2 * (0.5) = " << endl << 3.0 * m2 * (0.5) << endl;
+		cout << endl;
+	}
+	catch (exception& e) 
+	{
+		cout << "Error in stage " << stage << ": " << e.what() << endl;
+		cout << endl;
+	}
 
 	// Stage 6: square matrix interface
 	stage = 6;
